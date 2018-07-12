@@ -6,8 +6,10 @@ for(let i = 0; i<allButtons.length; i++){
         $('#images').css({
             transform: 'translateX('+ p +'px)'
         })
-        n = index //使自动播放按照新的顺序
-        activeButton(allButtons.eq(n))
+        activeButton(allButtons.eq(index))
+        killTimer() //选中某张图停留时间不够3s，甚至立即移走的bug
+        n = index  //使自动播放按照新的顺序
+        timerId = setTimer()
 
     })
 }
@@ -19,11 +21,11 @@ var timerId = setTimer()
 
 
 $('.window').on('mouseenter',() => {
-    window.clearInterval(timerId)
+    killTimer()
 })
 $('.window').on('mouseleave',() => {
     n += 1
-    allButtons.eq(n%size).trigger('click')//光标移走后图片立即切换效果，不管停留在该图片的时间大于小于3s
+    allButtons.eq(n%size).trigger('click')//使光标移走后图片立即切换，不管停留在该图片的时间大于小于3s
     timerId = setTimer()
 })
 
@@ -34,13 +36,11 @@ function setTimer(){
         allButtons.eq(n%size).trigger('click')
     },3000)
 }
+function killTimer(){
+    window.clearInterval(timerId)
+}
 function activeButton($button){
     $button.addClass('selected')
         .siblings('.selected').removeClass('selected')
 }
-
-
-
-
-
 
