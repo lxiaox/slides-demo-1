@@ -2,18 +2,16 @@ var allButtons = $('#buttons>span')
 for(let i = 0; i<allButtons.length; i++){
     $(allButtons[i]).on('click',(x)=>{
         let index = $(x.currentTarget).index()
-        let p = index * (-200)
-        $('#images').css({
-            transform: 'translateX('+ p +'px)'
-        })
-        activeButton(allButtons.eq(index))
-        killTimer() //选中某张图停留时间不够3s，甚至立即移走的bug
         n = index  //使自动播放按照新的顺序
+        slide(index)  //slide()里改变按钮颜色是通过n，这行写下面
+        //解决按钮与自动播放的时间冲突
+        window.clearInterval(timerId)
         timerId = setTimer()
 
     })
 }
-
+//温故：解决按钮与自动播放的时间冲突不能在点击事件添加kill/setTimer，
+//因为setTimer里就是触发点击事件，会造成自动播放无法停止以及n多bug
 var size = allButtons.length
 var n = 0
 
@@ -21,11 +19,12 @@ var timerId = setTimer()
 
 
 $('.window').on('mouseenter',() => {
-    killTimer()
+    window.clearInterval(timerId)
+
 })
 $('.window').on('mouseleave',() => {
     n += 1
-    allButtons.eq(n%size).trigger('click')//使光标移走后图片立即切换，不管停留在该图片的时间大于小于3s
+    slide(n % size)//使光标移走后图片立即切换
     timerId = setTimer()
 })
 
@@ -33,7 +32,7 @@ $('.window').on('mouseleave',() => {
 function setTimer(){
     return setInterval(()=>{//先等3s再执行n+=1，n%size=1、2、0、1
         n += 1
-        allButtons.eq(n%size).trigger('click')
+        slide(n % size)
     },3000)
 }
 function killTimer(){
@@ -43,4 +42,15 @@ function activeButton($button){
     $button.addClass('selected')
         .siblings('.selected').removeClass('selected')
 }
+function slide(i){
+    let p = i * (-200)
+    $('#images').css({
+        transform: 'translateX('+ p +'px)'
+    })
+    activeButton(allButtons.eq(n % size))
+}
+
+
+
+
 
