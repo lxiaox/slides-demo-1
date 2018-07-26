@@ -1,0 +1,32 @@
+.images{
+    display: flex;
+    align-items: flex-start;
+    transition: all .8s;
+
+}
+.images> img{
+    width: 400px;
+}
+.window{
+    width: 400px;
+    overflow: hidden;
+    margin: 20px auto;
+}
+.buttons{
+    text-align: center;
+}
+.buttons> span{
+    border: 1.4px solid grey;
+    display: inline-block;
+    width: 20px;
+    border-radius: 6px;
+    text-align: center;
+    margin-top: 10px;
+    margin-right: 5px;
+    transition: all .8s;
+
+}
+.buttons> span.selected{
+    border-color: purple;
+    color: purple;
+}

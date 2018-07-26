@@ -5,7 +5,7 @@ for(let i = 0; i<allButtons.length; i++){
         n = index  //使自动播放按照新的顺序
         slide(index)  //slide()里改变按钮颜色是通过n，这行写下面
         //解决按钮与自动播放的时间冲突
-        window.clearInterval(timerId)
+        killTimer(timerId)
         timerId = setTimer()
 
     })
@@ -19,12 +19,11 @@ var timerId = setTimer()
 
 
 $('.window').on('mouseenter',() => {
-    window.clearInterval(timerId)
-
+    killTimer(timerId)
 })
 $('.window').on('mouseleave',() => {
-    n += 1
-    slide(n % size)//使光标移走后图片立即切换
+    //n += 1
+    //slide(n % size)//上下两行使光标移走后图片立即切换
     timerId = setTimer()
 })
 
@@ -35,7 +34,7 @@ function setTimer(){
         slide(n % size)
     },3000)
 }
-function killTimer(){
+function killTimer(timerId){
     window.clearInterval(timerId)
 }
 function activeButton($button){
@@ -43,7 +42,7 @@ function activeButton($button){
         .siblings('.selected').removeClass('selected')
 }
 function slide(i){
-    let p = i * (-200)
+    let p = i * (-400)
     $('#images').css({
         transform: 'translateX('+ p +'px)'
     })
